@@ -13,6 +13,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import CustomTextField from "../components/textfield";
 import { infoRequestSchema } from "../schema";
 import { useState, useEffect } from "react";
+import { MdOpenInNew, MdContentCopy } from "react-icons/md";
 
 interface inputType {
     linky: string;
@@ -52,17 +53,24 @@ export default function LinkyInfo() {
     return (
         <>
             <Box textAlign="center" width="100%">
-                <Paper sx={{ width: "70%", margin: "0 auto", padding: 1 }}>
+                <Paper
+                    sx={{
+                        width: { xs: "90%", sm: "70%" },
+                        margin: "0 auto",
+                        padding: 0,
+                    }}
+                >
                     <Typography mb={5} variant="h3">
                         Get linky info
                     </Typography>
-                    <Grid
-                        container
-                        rowSpacing={2}
-                        sx={{ width: "80%", m: "2rem auto" }}
-                    >
-                        <Grid item sm={12}>
-                            <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Grid
+                            container
+                            spacing={2}
+                            sx={{ width: "80%", m: "2rem auto" }}
+                            justifyContent="space-between"
+                        >
+                            <Grid item sm={12} sx={{ width: "100%" }}>
                                 <TextField
                                     {...register("linky")}
                                     sx={{ width: "100%" }}
@@ -82,7 +90,15 @@ export default function LinkyInfo() {
                                             </InputAdornment>
                                         ),
                                         endAdornment: (
-                                            <InputAdornment position="end">
+                                            <InputAdornment
+                                                position="end"
+                                                sx={{
+                                                    display: {
+                                                        xs: "none",
+                                                        md: "flex",
+                                                    },
+                                                }}
+                                            >
                                                 <Button type="submit">
                                                     Unshorten Linky
                                                     <MdOutlineRemoveRedEye
@@ -96,16 +112,90 @@ export default function LinkyInfo() {
                                         ),
                                     }}
                                 />
-                            </form>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <CustomTextField
+                                    link={link}
+                                    label="Original Link"
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={6.5}
+                                sx={{
+                                    display: {
+                                        xs: "flex",
+                                        md: "none",
+                                    },
+                                }}
+                            >
+                                <Button
+                                    sx={{ width: "100%" }}
+                                    type="submit"
+                                    variant="contained"
+                                >
+                                    Unshorten
+                                    <MdOutlineRemoveRedEye
+                                        size={18}
+                                        style={{
+                                            marginLeft: 12,
+                                        }}
+                                    />
+                                </Button>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={6}
+                                sm={2.5}
+                                sx={{
+                                    display: {
+                                        xs: "flex",
+                                        md: "none",
+                                    },
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    sx={{ height: "100%", width: "100%" }}
+                                    onClick={() => {
+                                        if (link)
+                                            window.open(
+                                                link.toString(),
+                                                "_blank"
+                                            );
+                                    }}
+                                >
+                                    <MdOpenInNew size={20} />
+                                </Button>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={6}
+                                sm={2.5}
+                                sx={{
+                                    display: {
+                                        xs: "flex",
+                                        md: "none",
+                                    },
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    sx={{ height: "100%", width: "100%" }}
+                                    onClick={() => {
+                                        if (link)
+                                            navigator.clipboard.writeText(
+                                                link.toString()
+                                            );
+                                    }}
+                                >
+                                    <MdContentCopy size={20} />
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <CustomTextField
-                                link={link}
-                                label="Original Link"
-                            />
-                        </Grid>
-                    </Grid>
-                    <Typography variant="body1" color="initial">
+                    </form>
+                    <Typography variant="body1" color="initial" p={3}>
                         linky.louay.ga is a tool to shorten a URL or reduce the
                         length of a link for making it easy to remember
                     </Typography>

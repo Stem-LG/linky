@@ -44,60 +44,101 @@ export default function LinkShortner() {
         })
             .then((resp) => resp.json())
             .then((res) => {
-                router.push({ pathname:"/success",query:res})
+                router.push({ pathname: "/success", query: res });
             });
     }
 
     return (
-        
-            <Box textAlign="center" width="100%">
-                <Paper sx={{ width: "70%", margin: "auto auto", padding: 2 }}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <Grid container sx={{ width: "80%", m: "2rem auto" }}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    {...register("link")}
-                                    sx={{ width: "100%", mb: 1 }}
-                                    size="small"
-                                    variant="outlined"
-                                    error={Boolean(errors.link)}
-                                    helperText={errors.link?.message}
-                                    label="enter your link"
-                                />
-                            </Grid>
-                            <Grid item sm={6}>
-                                <TextField
-                                    {...register("customLinky")}
-                                    sx={{ width: "100%" }}
-                                    label="Custom url"
-                                    size="small"
-                                    error={Boolean(errors.customLinky)}
-                                    helperText={errors.customLinky?.message}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                {hostname + "/"}
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item sm={6}>
-                                <Button type="submit" variant="contained">
-                                    Shorten URL
-                                </Button>
-                            </Grid>
+        <Box textAlign="center" width="100%">
+            <Paper
+                sx={{
+                    width: { xs: "90%", sm: "70%" },
+                    margin: "auto auto",
+                    padding: 2,
+                }}
+            >
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    style={{ width: "100%" }}
+                >
+                    <Grid
+                        container
+                        sx={{
+                            width: "80%",
+                            m: "2rem auto",
+                            mb: { xs: 0, sm: "2rem" },
+                        }}
+                        rowSpacing={2}
+                    >
+                        <Grid item xs={12}>
+                            <TextField
+                                {...register("link")}
+                                sx={{ width: "100%" }}
+                                size="small"
+                                variant="outlined"
+                                error={Boolean(errors.link)}
+                                helperText={errors.link?.message}
+                                label="enter your link"
+                            />
                         </Grid>
-                    </form>
-                    <Typography variant="h6">OR</Typography>
-                    <Link href="/info">
-                        <Button variant="contained">Get Linky Info</Button>
-                    </Link>
-                    <Typography variant="body1" color="initial" sx={{ mt: 2 }}>
-                        linky.louay.ga is a tool to shorten a URL or reduce the
-                        length of a link for making it easy to remember
-                    </Typography>
-                </Paper>
-            </Box>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                {...register("customLinky")}
+                                sx={{ width: "100%" }}
+                                label="Custom url"
+                                size="small"
+                                error={Boolean(errors.customLinky)}
+                                helperText={errors.customLinky?.message}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            {hostname + "/"}
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Button
+                                sx={{
+                                    height: "100%",
+                                    minWidth: { xs: "100%", sm: "75%" },
+                                }}
+                                type="submit"
+                                variant="contained"
+                            >
+                                Shorten URL
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant="h6">OR</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Link
+                                href="/info"
+                                style={{ textDecoration: "none" }}
+                            >
+                                <Button
+                                    sx={{
+                                        minWidth: {
+                                            xs: "100%",
+                                            sm: "50%",
+                                            lg: "35%",
+                                        },
+                                    }}
+                                    variant="contained"
+                                >
+                                    Get Linky Info
+                                </Button>
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </form>
+                <Typography variant="body1" color="initial" sx={{ mt: 2 }}>
+                    linky.louay.ga is a tool to shorten a URL or reduce the
+                    length of a link for making it easy to remember
+                </Typography>
+            </Paper>
+        </Box>
     );
 }

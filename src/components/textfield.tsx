@@ -14,7 +14,15 @@ export default function CustomTextField(props: any) {
             InputProps={{
                 readOnly: true,
                 endAdornment: (
-                    <InputAdornment position="end">
+                    <InputAdornment
+                        position="end"
+                        sx={{
+                            display: {
+                                xs: "none",
+                                md: "flex",
+                            },
+                        }}
+                    >
                         <Button
                             onClick={() => {
                                 if (props.link)
