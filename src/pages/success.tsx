@@ -6,10 +6,10 @@ import { MdOpenInNew, MdContentCopy } from "react-icons/md";
 export default function LinkySuccessInfo() {
     const router = useRouter();
     const { query, isReady } = router;
-    let { link, linky } = query;
+    let { link, customLinky } = query;
 
     return (
-        <>
+        
             <Box textAlign="center" width="100%">
                 <Paper sx={{ width: { xs: "90%", sm: "70%" }, margin: "0 auto", padding: 1 }}>
                     <Grid
@@ -19,18 +19,18 @@ export default function LinkySuccessInfo() {
                     >
                         <Grid item xs={12}>
                             <Typography
-                                color={link || !isReady ? "initial" : "red"}
+                                color={link || !isReady ? "initial" : "error"}
                             >
                                 {isReady
                                     ? link
                                         ? "Link Created Successfully 🥳"
-                                        : "Error!"
+                                        : "Missing information!"
                                     : "Loading..."}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <CustomTextField
-                                link={linky ? location.host + "/" + linky : ""}
+                                link={customLinky ? location.host + "/" + customLinky : ""}
                                 label="Linky"
                             />
                         </Grid>
@@ -54,12 +54,12 @@ export default function LinkySuccessInfo() {
                                 variant="contained"
                                 sx={{ height: "100%", width: "100%" }}
                                 onClick={() => {
-                                    if (linky)
+                                    if (customLinky)
                                         window.open(
                                             "http://" +
                                                 location.host +
                                                 "/" +
-                                                linky.toString(),
+                                                customLinky.toString(),
                                             "_blank"
                                         );
                                 }}
@@ -85,11 +85,11 @@ export default function LinkySuccessInfo() {
                                 variant="contained"
                                 sx={{ height: "100%", width: "100%" }}
                                 onClick={() => {
-                                    if (linky)
+                                    if (customLinky)
                                         navigator.clipboard.writeText(
                                             location.host +
                                                 "/" +
-                                                linky.toString()
+                                                customLinky.toString()
                                         );
                                 }}
                             >
@@ -107,6 +107,6 @@ export default function LinkySuccessInfo() {
                     </Typography>
                 </Paper>
             </Box>
-        </>
+        
     );
 }

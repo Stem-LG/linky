@@ -10,6 +10,6 @@ datasource db {
 model link {
   id     Int    @id @default(autoincrement())
   link   String
-  linky  String
+  linky  String @unique
   author Int    @default(0)
 }

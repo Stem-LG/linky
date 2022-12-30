@@ -29,6 +29,8 @@ export default function LinkShortner() {
     });
 
     const [hostname, setHostname] = useState("");
+    const [linkyError, setLinkyError] = useState("");
+    const [serverError, setServerError] = useState("");
 
     const router = useRouter();
 
@@ -37,15 +39,31 @@ export default function LinkShortner() {
     }, []);
 
     function onSubmit(data: inputType) {
-        console.log(data);
+        setLinkyError("");
         fetch("/api/shorten", {
             method: "POST",
-            body: JSON.stringify(data),
-        })
-            .then((resp) => resp.json())
-            .then((res) => {
-                router.push({ pathname: "/success", query: res });
-            });
+            body: JSON.stringify({link:"http://google.com",linky:"ff"}),
+        }).then(async (resp) => {
+            const { status } = resp;
+            const res = resp.json();
+            switch (status) {
+                case 200:
+                    router.push({ pathname: "/success", query: await res });
+                    break;
+                case 409:
+                    setLinkyError("Linky already used");
+                    break;
+                case 508:
+                    setServerError(`server error: ${(await res).error}`);
+                    break;
+                case 400:
+                    setServerError(`validation error: ${(await res).error}`);
+                    break;
+                default:
+                    setServerError("unknown error occured")
+                    break;
+            }
+        });
     }
 
     return (
@@ -57,6 +75,7 @@ export default function LinkShortner() {
                     padding: 2,
                 }}
             >
+                <Typography color="error">{serverError}</Typography>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     style={{ width: "100%" }}
@@ -87,8 +106,13 @@ export default function LinkShortner() {
                                 sx={{ width: "100%" }}
                                 label="Custom url"
                                 size="small"
-                                error={Boolean(errors.customLinky)}
-                                helperText={errors.customLinky?.message}
+                                error={
+                                    Boolean(errors.customLinky) ||
+                                    Boolean(linkyError)
+                                }
+                                helperText={
+                                    errors.customLinky?.message || linkyError
+                                }
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
@@ -101,7 +125,6 @@ export default function LinkShortner() {
                         <Grid item xs={12} md={6}>
                             <Button
                                 sx={{
-                                    height: "100%",
                                     minWidth: { xs: "100%", sm: "75%" },
                                 }}
                                 type="submit"
