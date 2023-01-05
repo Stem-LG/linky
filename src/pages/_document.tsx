@@ -5,12 +5,7 @@ import Link from "next/link";
 export default function Document() {
     return (
         <Html lang="en">
-            <Head>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                ></meta>
-            </Head>
+            <Head/>
             <body>
                 <Link style={{ textDecoration: "none" }} href="/">
                     <Typography
