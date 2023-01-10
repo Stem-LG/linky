@@ -14,6 +14,7 @@ import CustomTextField from "../components/textfield";
 import { infoRequestSchema } from "../schema";
 import { useState, useEffect } from "react";
 import { MdOpenInNew, MdContentCopy } from "react-icons/md";
+import ButtonWithLoading from "../components/buttonWithLoading";
 
 interface inputType {
     linky: string;
@@ -30,12 +31,14 @@ export default function LinkyInfo() {
     const [hostname, setHostname] = useState("");
     const [link, setLink] = useState("");
     const [linkError, setLinkError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setHostname(location.host);
     }, []);
 
     function onSubmit(data: inputType) {
+        setLoading(true);
         setLinkError("");
         fetch("/api/unshorten", {
             method: "POST",
@@ -48,6 +51,9 @@ export default function LinkyInfo() {
                 setLinkError("Link not found");
             }
         });
+        setTimeout(()=>{
+            setLoading(false);
+        },500)
     }
 
     return (
@@ -99,7 +105,10 @@ export default function LinkyInfo() {
                                                     },
                                                 }}
                                             >
-                                                <Button type="submit">
+                                                <ButtonWithLoading
+                                                    loadingState={loading}
+                                                    type="submit"
+                                                >
                                                     Unshorten Linky
                                                     <MdOutlineRemoveRedEye
                                                         size={18}
@@ -107,7 +116,7 @@ export default function LinkyInfo() {
                                                             marginLeft: 12,
                                                         }}
                                                     />
-                                                </Button>
+                                                </ButtonWithLoading>
                                             </InputAdornment>
                                         ),
                                     }}
