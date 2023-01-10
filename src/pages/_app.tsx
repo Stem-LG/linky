@@ -6,7 +6,10 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 
-export default function App({ Component, pageProps:{session, ...pageProps} }: AppProps) {
+export default function App({
+    Component,
+    pageProps: { session, ...pageProps },
+}: AppProps) {
     return (
         <>
             <Head>
@@ -14,6 +17,7 @@ export default function App({ Component, pageProps:{session, ...pageProps} }: Ap
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 ></meta>
+                <title>Linky</title>
             </Head>
             <SessionProvider session={session}>
                 <Component {...pageProps} />;

@@ -13,6 +13,7 @@ import Link from "next/link";
 import { shortenRequestSchema } from "../schema";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import ButtonWithLoading from "../components/buttonWithLoading";
 
 interface inputType {
     link: string;
@@ -31,6 +32,7 @@ export default function LinkShortner() {
     const [hostname, setHostname] = useState("");
     const [linkyError, setLinkyError] = useState("");
     const [serverError, setServerError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const router = useRouter();
 
@@ -40,9 +42,14 @@ export default function LinkShortner() {
 
     function onSubmit(data: inputType) {
         setLinkyError("");
+        setLoading(true);
+        
         fetch("/api/shorten", {
             method: "POST",
-            body: JSON.stringify({link:"http://google.com",linky:"ff"}),
+            body: JSON.stringify({
+                link: data.link,
+                customLinky: data.customLinky,
+            }),
         }).then(async (resp) => {
             const { status } = resp;
             const res = resp.json();
@@ -60,9 +67,10 @@ export default function LinkShortner() {
                     setServerError(`validation error: ${(await res).error}`);
                     break;
                 default:
-                    setServerError("unknown error occured")
+                    setServerError("unknown error occured");
                     break;
             }
+            setLoading(false);
         });
     }
 
@@ -123,15 +131,16 @@ export default function LinkShortner() {
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Button
+                            <ButtonWithLoading
                                 sx={{
                                     minWidth: { xs: "100%", sm: "75%" },
                                 }}
                                 type="submit"
                                 variant="contained"
+                                loadingState={loading}
                             >
                                 Shorten URL
-                            </Button>
+                            </ButtonWithLoading>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="h6">OR</Typography>
