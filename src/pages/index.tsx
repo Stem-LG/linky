@@ -70,9 +70,8 @@ export default function LinkShortner() {
                     setServerError("unknown error occured");
                     break;
             }
+            setLoading(false);
         });
-        
-        setLoading(false);
     }
 
     return (

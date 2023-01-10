@@ -50,10 +50,11 @@ export default function LinkyInfo() {
             } else {
                 setLinkError("Link not found");
             }
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
         });
-        setTimeout(()=>{
-            setLoading(false);
-        },500)
+        
     }
 
     return (
