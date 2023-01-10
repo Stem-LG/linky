@@ -42,7 +42,10 @@ export default function LinkShortner() {
         setLinkyError("");
         fetch("/api/shorten", {
             method: "POST",
-            body: JSON.stringify({link:"http://google.com",linky:"ff"}),
+            body: JSON.stringify({
+                link: data.link,
+                customLinky: data.customLinky,
+            }),
         }).then(async (resp) => {
             const { status } = resp;
             const res = resp.json();
@@ -60,7 +63,7 @@ export default function LinkShortner() {
                     setServerError(`validation error: ${(await res).error}`);
                     break;
                 default:
-                    setServerError("unknown error occured")
+                    setServerError("unknown error occured");
                     break;
             }
         });

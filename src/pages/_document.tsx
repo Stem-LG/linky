@@ -1,16 +1,11 @@
 import { Typography } from "@mui/material";
-import { Html, Head, Main, NextScript } from "next/document";
+import { Head, Html, Main, NextScript } from "next/document";
 import Link from "next/link";
 
 export default function Document() {
     return (
         <Html lang="en">
-            <Head>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                ></meta>
-            </Head>
+            <Head></Head>
             <body>
                 <Link style={{ textDecoration: "none" }} href="/">
                     <Typography
