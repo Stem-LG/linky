@@ -5,6 +5,7 @@ import "@fontsource/roboto/700.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import AccountFab from "../components/fab";
 
 export default function App({
     Component,
@@ -20,7 +21,8 @@ export default function App({
                 <title>Linky</title>
             </Head>
             <SessionProvider session={session}>
-                <Component {...pageProps} />;
+                <Component {...pageProps} />
+                <AccountFab/>
             </SessionProvider>
         </>
     );

@@ -8,10 +8,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions)
-
-  console.log("login info: ", session?.user || "not logged")
   res.status(200).json({
     loginStatus: !!session?.user,
-    message: (session?.user) ? { name: session.user.name, email: session.user.email } : ""
+    message: (session?.user) ? { name: session.user.name, email: session.user.email, role:session.user.role } : ""
   })
 }

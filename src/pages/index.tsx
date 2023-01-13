@@ -43,7 +43,7 @@ export default function LinkShortner() {
     function onSubmit(data: inputType) {
         setLinkyError("");
         setLoading(true);
-        
+
         fetch("/api/shorten", {
             method: "POST",
             body: JSON.stringify({
