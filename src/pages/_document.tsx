@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Document() {
     return (
         <Html lang="en">
-            <Head></Head>
+            <Head/>
             <body>
                 <Link style={{ textDecoration: "none" }} href="/">
                     <Typography

@@ -3,9 +3,14 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import AccountFab from "../components/fab";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+    Component,
+    pageProps: { session, ...pageProps },
+}: AppProps) {
     return (
         <>
             <Head>
@@ -15,7 +20,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 ></meta>
                 <title>Linky</title>
             </Head>
-            <Component {...pageProps} />;
+            <SessionProvider session={session}>
+                <Component {...pageProps} />
+                <AccountFab/>
+            </SessionProvider>
         </>
     );
 }
