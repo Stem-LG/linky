@@ -30,10 +30,12 @@ export default function SignIn({ providers }) {
                         <br />
                         Please Login
                     </Typography>
-                    {router.query.error ? (
+                    {router.query.error == "OAuthAccountNotLinked" ? (
                         <Typography color="error">
                             Login with the same account you originally used
                         </Typography>
+                    ) : router.query.error ? (
+                        "an error occured, try again"
                     ) : (
                         ""
                     )}
@@ -143,7 +145,7 @@ export async function getServerSideProps(context: any) {
     if (session) {
         return {
             redirect: {
-                destination: context.query.callbackUrl||"/",
+                destination: context.query.callbackUrl || "/",
                 permenant: false,
             },
         };

@@ -1,10 +1,9 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
+// import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord"
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prismadb";
-import { Session } from "inspector";
 
 
 export const authOptions: NextAuthOptions = {
@@ -14,10 +13,10 @@ export const authOptions: NextAuthOptions = {
 
     },
     providers: [
-        GithubProvider({
-            clientId: process.env.GITHUB_ID || "",
-            clientSecret: process.env.GITHUB_SECRET || "",
-        }),
+        // GithubProvider({
+        //     clientId: process.env.GITHUB_ID || "",
+        //     clientSecret: process.env.GITHUB_SECRET || "",
+        // }),
         GoogleProvider({
             clientId: process.env.GOOGLE_ID || "",
             clientSecret: process.env.GOOGLE_SECRET || ""
@@ -25,7 +24,7 @@ export const authOptions: NextAuthOptions = {
         DiscordProvider({
             clientId: process.env.DISCORD_ID || "",
             clientSecret: process.env.DISCORD_SECRET || ""
-        })
+        }),
         // ...add more providers here
     ],
 
