@@ -77,7 +77,7 @@ export default function SignIn({ providers }) {
                             <Button
                                 sx={{
                                     minWidth: {
-                                        xs: "100%",
+                                        xs: "70%",
                                         sm: "50%",
                                         lg: "35%",
                                     },
