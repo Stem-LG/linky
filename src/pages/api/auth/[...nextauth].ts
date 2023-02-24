@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 // import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import DiscordProvider from "next-auth/providers/discord"
+import FacebookProvider from "next-auth/providers/facebook"
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prismadb";
 
@@ -25,6 +26,10 @@ export const authOptions: NextAuthOptions = {
             clientId: process.env.DISCORD_ID || "",
             clientSecret: process.env.DISCORD_SECRET || ""
         }),
+        FacebookProvider({
+            clientId: process.env.FACEBOOK_ID || "",
+            clientSecret: process.env.FACEBOOK_SECRET || "",
+        })
         // ...add more providers here
     ],
 
@@ -37,8 +42,8 @@ export const authOptions: NextAuthOptions = {
             return token
         }
     },
-    pages:{
-        signIn:"/login",
+    pages: {
+        signIn: "/login",
     }
 }
 

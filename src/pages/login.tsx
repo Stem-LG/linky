@@ -9,7 +9,13 @@ import {
 import { signIn, getProviders, getSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FaDiscord, FaGithub, FaGoogle, FaKey } from "react-icons/fa";
+import {
+    FaDiscord,
+    FaFacebook,
+    FaGithub,
+    FaGoogle,
+    FaKey,
+} from "react-icons/fa";
 
 //@ts-ignore
 export default function SignIn({ providers }) {
@@ -105,8 +111,8 @@ interface LoginButtonProps {
 
 function LoginButton({ providerName, providerId }: LoginButtonProps) {
     const icon =
-        providerName == "GitHub" ? (
-            <FaGithub />
+        providerName == "Facebook" ? (
+            <FaFacebook />
         ) : providerName == "Google" ? (
             <FaGoogle />
         ) : providerName == "Discord" ? (
@@ -115,8 +121,8 @@ function LoginButton({ providerName, providerId }: LoginButtonProps) {
             <FaKey />
         );
     const color =
-        providerName == "GitHub"
-            ? "black"
+        providerName == "Facebook"
+            ? "blue"
             : providerName == "Google"
             ? "red"
             : providerName == "Discord"
