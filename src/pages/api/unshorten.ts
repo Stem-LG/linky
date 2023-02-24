@@ -11,12 +11,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const prisma = new PrismaClient()
 
-        const link = await prisma.link.findFirst({where: {linky} })
-        
-        if(link)
-        res.status(200).json({ link: link.link })
+        const link = await prisma.link.findFirst({ where: { linky } })
+
+        if (link) {
+            await prisma.link.update({
+                where: { id: link.id },
+                data: {
+                    visit_count: { increment: 1 }
+                }
+            })
+            res.status(200).json({ link: link.link })
+        }
         else
-        res.status(404).json({ error: "Link not found" })
+            res.status(404).json({ error: "Link not found" })
 
     } catch (err) {
         if (err instanceof ValidationError) {

@@ -3,13 +3,13 @@ import randomString from "../../tools/random"
 import { shortenRequestSchema } from "../../schema"
 import { ValidationError } from "yup"
 import { PrismaClient } from "@prisma/client"
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { link, customLinky } = JSON.parse(req.body)
-    const session = await unstable_getServerSession(req, res, authOptions)
+    const session = await getServerSession(req, res, authOptions)
     try {
         await shortenRequestSchema.validate({ link, customLinky })
         console.log("customLinky: ", customLinky)

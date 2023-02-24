@@ -145,7 +145,7 @@ export default function LinkShortner() {
                         <Grid item xs={12}>
                             <Typography variant="h6">OR</Typography>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12}> 
                             <Link
                                 href="/info"
                                 style={{ textDecoration: "none" }}

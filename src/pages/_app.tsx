@@ -6,6 +6,7 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import AccountFab from "../components/fab";
+import { LicenseInfo } from "@mui/x-data-grid-pro";
 
 export default function App({
     Component,

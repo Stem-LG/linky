@@ -8,11 +8,13 @@ datasource db {
 }
 
 model link {
-  id             Int    @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   link           String
-  linky          String @unique
+  linky          String   @unique
   author         String
-  authorRelation User   @relation(fields: [author], references: [email])
+  visit_count    Int      @default(0)
+  creation_date  DateTime @default(now())
+  authorRelation User     @relation(fields: [author], references: [email])
 }
 
 model Account {
