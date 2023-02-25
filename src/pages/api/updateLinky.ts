@@ -24,25 +24,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const ogLink = await prisma.link.findFirst({ where: { id } })
 
-        if (ogLink) {
-            if (ogLink.author == session?.user.email) {
-                await prisma.link.update(
-                    {
-                        where: {
-                            id
-                        },
-                        data: {
-                            link, linky
+        if (!Boolean(await prisma.link.findFirst({ where: { linky } }))) {
+            if (ogLink) {
+                if (ogLink.author == session?.user.email) {
+                    await prisma.link.update(
+                        {
+                            where: {
+                                id
+                            },
+                            data: {
+                                link, linky
+                            }
                         }
-                    }
-                )
-                res.status(200).json({ id })
-            } else {
-                res.status(401).json({ error: "unauthorized" })
+                    )
+                    res.status(200).json({ id })
+                } else {
+                    res.status(401).json({ error: "unauthorized" })
+                }
             }
+            else {
+                res.status(404).json({ error: "Link not found" })
+            }
+        } else {
+            res.status(409).json({ error: "linky already used" })
         }
-        else
-            res.status(404).json({ error: "Link not found" })
 
     } catch (err) {
         if (err instanceof ValidationError) {

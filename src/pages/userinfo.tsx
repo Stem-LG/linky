@@ -174,6 +174,7 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                     register,
                     handleSubmit,
                     formState: { errors },
+                    setError
                 } = useForm({
                     resolver: yupResolver(updateLinkySchema),
                 });
@@ -205,7 +206,7 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                 }
 
                 function updateLinky(things: updateLinkyParams) {
-                    console.log("things: ", things);
+                    // console.log("things: ", things);
 
                     fetch("/api/updateLinky", {
                         method: "POST",
@@ -213,7 +214,7 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                     }).then((resp) => {
                         switch (resp.status) {
                             case 200:
-                                console.log("link updated");
+                                // console.log("link updated");
                                 setOpen(false);
                                 setLinks(
                                     links.map((link) => {
@@ -226,6 +227,9 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                                     })
                                 );
                                 break;
+                            case 409:
+                                // console.log("link already used")
+                                setError("linky",{message:"linky already used"})
                             default:
                                 break;
                         }
