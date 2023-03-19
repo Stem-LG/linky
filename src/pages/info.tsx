@@ -3,9 +3,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Box,
     Button,
+    Checkbox,
+    FormControlLabel,
     Grid,
     InputAdornment,
-    Paper,
     TextField,
     Typography,
 } from "@mui/material";
@@ -15,6 +16,7 @@ import { infoRequestSchema } from "../schema";
 import { useState, useEffect } from "react";
 import { MdOpenInNew, MdContentCopy } from "react-icons/md";
 import ButtonWithLoading from "../components/buttonWithLoading";
+import PaperWithInfo from "../components/paperWithInfo";
 
 interface inputType {
     linky: string;
@@ -30,6 +32,7 @@ export default function LinkyInfo() {
 
     const [hostname, setHostname] = useState("");
     const [link, setLink] = useState("");
+    const [sr, setSr] = useState(false);
     const [linkError, setLinkError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -46,7 +49,10 @@ export default function LinkyInfo() {
         }).then((resp) => {
             const { status } = resp;
             if (status == 200) {
-                resp.json().then((res) => setLink(res.link));
+                resp.json().then(({ link, serverRedirect }) => {
+                    setLink(link);
+                    setSr(serverRedirect);
+                });
             } else {
                 setLinkError("Link not found");
             }
@@ -54,13 +60,12 @@ export default function LinkyInfo() {
                 setLoading(false);
             }, 500);
         });
-        
     }
 
     return (
         <>
             <Box textAlign="center" width="100%">
-                <Paper
+                <PaperWithInfo
                     sx={{
                         width: { xs: "90%", sm: "70%" },
                         margin: "0 auto",
@@ -127,6 +132,12 @@ export default function LinkyInfo() {
                                 <CustomTextField
                                     link={link}
                                     label="Original Link"
+                                />
+                            </Grid>
+                            <Grid item>
+                                <FormControlLabel
+                                    control={<Checkbox checked={sr} />}
+                                    label="server redirect"
                                 />
                             </Grid>
                             <Grid
@@ -209,7 +220,7 @@ export default function LinkyInfo() {
                         linky.louay.ga is a tool to shorten a URL or reduce the
                         length of a link for making it easy to remember
                     </Typography>
-                </Paper>
+                </PaperWithInfo>
             </Box>
         </>
     );

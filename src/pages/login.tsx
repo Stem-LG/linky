@@ -10,6 +10,7 @@ import { signIn, getProviders, getSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FaDiscord, FaGithub, FaGoogle, FaKey } from "react-icons/fa";
+import PaperWithInnfo from "../components/paperWithInfo";
 
 //@ts-ignore
 export default function SignIn({ providers }) {
@@ -17,10 +18,9 @@ export default function SignIn({ providers }) {
     return (
         <>
             <Box textAlign="center" width="100%">
-                <Paper
+                <PaperWithInnfo
                     sx={{
                         width: { xs: "90%", sm: "70%" },
-                        margin: "0 auto",
                         padding: 0,
                     }}
                     elevation={12}
@@ -92,7 +92,7 @@ export default function SignIn({ providers }) {
                         linky.louay.ga is a tool to shorten a URL or reduce the
                         length of a link for making it easy to remember
                     </Typography>
-                </Paper>
+                </PaperWithInnfo>
             </Box>
         </>
     );

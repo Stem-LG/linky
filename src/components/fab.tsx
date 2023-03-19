@@ -31,11 +31,6 @@ export default function AccountFab() {
                     </Fab>
                 </Link>
             </Box>
-            <Box sx={{ position: "fixed", bottom: 0, left: 0,p:"10px",width:"calc(100% - 20px)",textAlign:{xs:"center",md:"left"}}}>
-                <Link href="https://www.louay.ga" style={{textDecoration:"none"}}>
-                    <Button variant="contained" color="warning">Created by Louay Ghanney</Button>
-                </Link>
-            </Box>
         </>
     );
 }

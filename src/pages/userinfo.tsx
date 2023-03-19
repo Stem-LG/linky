@@ -6,6 +6,8 @@ import {
     Paper,
     Dialog,
     TextField,
+    FormControlLabel,
+    Checkbox,
 } from "@mui/material";
 import { link, PrismaClient } from "@prisma/client";
 import { getSession, useSession, signOut, signIn } from "next-auth/react";
@@ -16,6 +18,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { shortenRequestSchema, updateLinkySchema } from "../schema";
+import PaperWithInfo from "../components/paperWithInfo";
 
 export default function UserInfo({ userLinks }: any) {
     const { data: session, status } = useSession();
@@ -33,7 +36,7 @@ export default function UserInfo({ userLinks }: any) {
             return (
                 <>
                     <Box textAlign="center" width="100%">
-                        <Paper
+                        <PaperWithInfo
                             sx={{
                                 width: { xs: "90%", sm: "70%" },
                                 margin: "0 auto",
@@ -59,7 +62,7 @@ export default function UserInfo({ userLinks }: any) {
                                         width={120}
                                         height={120}
                                         style={{
-                                            borderRadius:"25px"
+                                            borderRadius: "25px",
                                         }}
                                     />
                                 </Grid>
@@ -117,7 +120,7 @@ export default function UserInfo({ userLinks }: any) {
                                 to remember
                             </Typography>
                             <MyLinksTable links={links} setLinks={setLinks} />
-                        </Paper>
+                        </PaperWithInfo>
                     </Box>
                 </>
             );
@@ -152,6 +155,14 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
             width: 55,
         },
         {
+            field: "server_redirect",
+            headerName: "SR",
+            width: 62,
+            renderCell: ({ value }) => {
+                return <Checkbox checked={value} />;
+            },
+        },
+        {
             field: "link",
             headerName: "link",
             flex: 1,
@@ -167,14 +178,14 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
             sortable: false,
             width: 200,
             renderCell: (params) => {
-                const { id } = params.row;
+                const { server_redirect, id } = params.row;
                 const [open, setOpen] = useState(false);
 
                 const {
                     register,
                     handleSubmit,
                     formState: { errors },
-                    setError
+                    setError,
                 } = useForm({
                     resolver: yupResolver(updateLinkySchema),
                 });
@@ -203,14 +214,15 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                 interface updateLinkyParams {
                     link: string;
                     linky: string;
+                    serverRedirect: boolean;
                 }
 
-                function updateLinky(things: updateLinkyParams) {
-                    // console.log("things: ", things);
+                function updateLinky(updatedInfo: updateLinkyParams) {
+                    // console.log("updatedInfo: ", updatedInfo);
 
                     fetch("/api/updateLinky", {
                         method: "POST",
-                        body: JSON.stringify({ id, ...things }),
+                        body: JSON.stringify({ id, ...updatedInfo }),
                     }).then((resp) => {
                         switch (resp.status) {
                             case 200:
@@ -219,8 +231,9 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                                 setLinks(
                                     links.map((link) => {
                                         if (link.id == id) {
-                                            link.link = things.link;
-                                            link.linky = things.linky;
+                                            link.link = updatedInfo.link;
+                                            link.linky = updatedInfo.linky;
+                                            link.server_redirect = updatedInfo.serverRedirect;
                                         }
 
                                         return link;
@@ -229,7 +242,9 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                                 break;
                             case 409:
                                 // console.log("link already used")
-                                setError("linky",{message:"linky already used"})
+                                setError("linky", {
+                                    message: "linky already used",
+                                });
                             default:
                                 break;
                         }
@@ -311,6 +326,18 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                                             {...input}
                                         />
                                     ))}
+                                    <FormControlLabel
+                                        sx={{
+                                            ml: "0px",
+                                        }}
+                                        control={
+                                            <Checkbox
+                                                defaultChecked={server_redirect}
+                                                {...register("serverRedirect")}
+                                            />
+                                        }
+                                        label="server redirect"
+                                    />
                                 </Box>
                                 <Box
                                     sx={{

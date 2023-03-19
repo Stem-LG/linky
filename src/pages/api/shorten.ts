@@ -8,19 +8,16 @@ import { authOptions } from "./auth/[...nextauth]"
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { link, customLinky } = JSON.parse(req.body)
+    const { link, customLinky, serverRedirect } = JSON.parse(req.body)
     const session = await getServerSession(req, res, authOptions)
     try {
-        await shortenRequestSchema.validate({ link, customLinky })
-        console.log("customLinky: ", customLinky)
+        await shortenRequestSchema.validate({ link, customLinky, serverRedirect })
         const prisma = new PrismaClient()
-
-
         if (Boolean(customLinky)) {
             if (Boolean(await prisma.link.findFirst({ where: { linky: customLinky } }))) {
                 res.status(409).json({ error: "linky already used" })
             } else if (session?.user.email) {
-                await prisma.link.create({ data: { link, linky: customLinky, author: session.user.email } })
+                await prisma.link.create({ data: { link, linky: customLinky, author: session.user.email, "server_redirect": serverRedirect } })
                 res.status(200).json({ link, customLinky })
             } else {
                 res.status(409).json({ error: "user not authenticated. this shouldn't happen, but if it did i have protection :)" })

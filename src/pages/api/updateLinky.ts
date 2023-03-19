@@ -10,7 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.log("api body: ", req.body)
 
 
-    const { id, link, linky } = JSON.parse(req.body)
+    const { id, link, linky, serverRedirect } = JSON.parse(req.body)
 
 
 
@@ -18,13 +18,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const session = await getServerSession(req, res, authOptions)
     try {
-        await updateLinkySchema.validate({ id, link, linky })
+        await updateLinkySchema.validate({ id, link, linky, serverRedirect })
 
         const prisma = new PrismaClient()
 
         const ogLink = await prisma.link.findFirst({ where: { id } })
 
-        if (!Boolean(await prisma.link.findFirst({ where: { linky } }))) {
+        if (ogLink?.linky == linky || !Boolean(await prisma.link.findFirst({ where: { linky } }))) {
             if (ogLink) {
                 if (ogLink.author == session?.user.email) {
                     await prisma.link.update(
@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                 id
                             },
                             data: {
-                                link, linky
+                                link, linky, server_redirect:serverRedirect
                             }
                         }
                     )

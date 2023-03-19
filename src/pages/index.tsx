@@ -2,22 +2,25 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Box,
-    Paper,
     Typography,
     Grid,
     TextField,
     InputAdornment,
     Button,
+    Checkbox,
+    FormControlLabel,
 } from "@mui/material";
 import Link from "next/link";
 import { shortenRequestSchema } from "../schema";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ButtonWithLoading from "../components/buttonWithLoading";
+import PaperWithInfo from "../components/paperWithInfo";
 
 interface inputType {
     link: string;
     customLinky?: string;
+    serverRedirect?: boolean;
 }
 
 export default function LinkShortner() {
@@ -25,6 +28,8 @@ export default function LinkShortner() {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
+        getValues,
     } = useForm<inputType>({
         resolver: yupResolver(shortenRequestSchema),
     });
@@ -32,6 +37,7 @@ export default function LinkShortner() {
     const [hostname, setHostname] = useState("");
     const [linkyError, setLinkyError] = useState("");
     const [serverError, setServerError] = useState("");
+    const [checked, setChecked] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
@@ -49,6 +55,7 @@ export default function LinkShortner() {
             body: JSON.stringify({
                 link: data.link,
                 customLinky: data.customLinky,
+                serverRedirect: data.serverRedirect,
             }),
         }).then(async (resp) => {
             const { status } = resp;
@@ -76,7 +83,7 @@ export default function LinkShortner() {
 
     return (
         <Box textAlign="center" width="100%">
-            <Paper
+            <PaperWithInfo
                 sx={{
                     width: { xs: "90%", sm: "70%" },
                     margin: "auto auto",
@@ -106,6 +113,7 @@ export default function LinkShortner() {
                                 error={Boolean(errors.link)}
                                 helperText={errors.link?.message}
                                 label="enter your link"
+                                
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -143,9 +151,19 @@ export default function LinkShortner() {
                             </ButtonWithLoading>
                         </Grid>
                         <Grid item xs={12}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        {...register("serverRedirect")}
+                                    />
+                                }
+                                label="Server Redirect (no ads)"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
                             <Typography variant="h6">OR</Typography>
                         </Grid>
-                        <Grid item xs={12}> 
+                        <Grid item xs={12}>
                             <Link
                                 href="/info"
                                 style={{ textDecoration: "none" }}
@@ -170,7 +188,7 @@ export default function LinkShortner() {
                     linky.louay.ga is a tool to shorten a URL or reduce the
                     length of a link for making it easy to remember
                 </Typography>
-            </Paper>
+            </PaperWithInfo>
         </Box>
     );
 }
