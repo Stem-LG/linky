@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import PaperWithInfo from "../components/paperWithInfo";
 import { infoRequestSchema } from "../schema";
