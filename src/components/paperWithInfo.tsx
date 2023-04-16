@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function PaperWithInfo(props:any){
     return (
-        <Box sx={{width:"100%", display:"flex", flexDirection:"column",alignItems:"center"}}>
+        <Box sx={{width:"100%",mb:"2rem", display:"flex", flexDirection:"column",alignItems:"center"}}>
             <Paper style={{ margin: "10px auto" }} {...props}></Paper>
             <Link
                 href="https://www.louay.ga"

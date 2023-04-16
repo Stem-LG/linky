@@ -64,6 +64,9 @@ export default function LinkShortner() {
                 case 200:
                     router.push({ pathname: "/success", query: await res });
                     break;
+                case 403:
+                    setLinkyError("Linky unavailable");
+                    break;
                 case 409:
                     setLinkyError("Linky already used");
                     break;

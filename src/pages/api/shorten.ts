@@ -5,16 +5,22 @@ import { ValidationError } from "yup"
 import { PrismaClient } from "@prisma/client"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
+import { availableRoutes } from "../../lib/routes"
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { link, customLinky, serverRedirect } = JSON.parse(req.body)
     const session = await getServerSession(req, res, authOptions)
+
+    console.log("linky:", customLinky, "linky exists: ", availableRoutes())
+
     try {
         await shortenRequestSchema.validate({ link, customLinky, serverRedirect })
         const prisma = new PrismaClient()
         if (Boolean(customLinky)) {
-            if (Boolean(await prisma.link.findFirst({ where: { linky: customLinky } }))) {
+            if (availableRoutes().includes(customLinky)) {
+                res.status(403).json({ error: "linky unavailable" })
+            } else if (Boolean(await prisma.link.findFirst({ where: { linky: customLinky } }))) {
                 res.status(409).json({ error: "linky already used" })
             } else if (session?.user.email) {
                 await prisma.link.create({ data: { link, linky: customLinky, author: session.user.email, "server_redirect": serverRedirect } })

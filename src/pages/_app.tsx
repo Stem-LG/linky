@@ -6,7 +6,7 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import AccountFab from "../components/fab";
-import { LicenseInfo } from "@mui/x-data-grid-pro";
+import { CssBaseline } from "@mui/material";
 
 export default function App({
     Component,
@@ -21,6 +21,7 @@ export default function App({
                 ></meta>
                 <title>Linky</title>
             </Head>
+            <CssBaseline/>
             <SessionProvider session={session}>
                 <Component {...pageProps} />
                 <AccountFab/>

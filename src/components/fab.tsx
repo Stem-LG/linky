@@ -10,13 +10,13 @@ export default function AccountFab() {
     return (
         <>
             <Box
-                sx={{ position: "fixed", bottom: {xs:"52.5px",sm:"16px"}, right: "16px", gap: 1 }}
+                sx={{ position: "fixed", bottom: "1rem", right: "1rem", gap: 1 }}
                 display="flex"
                 flexDirection={{ xs: "column", md: "row" }}
                 alignItems="center"
             >
                 <Link href={session ? "/userinfo" : "/login"}>
-                    <Fab sx={{ width: 100, height: 100 }}>
+                    <Fab sx={{ width: "5rem", height: "5rem" }}>
                         {session ? (
                             <Image
                                 src={session?.user?.image?.toString() || ""}
