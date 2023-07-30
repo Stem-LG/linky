@@ -28,16 +28,13 @@ export default function LinkShortner() {
         register,
         handleSubmit,
         formState: { errors },
-        setValue,
-        getValues,
-    } = useForm<inputType>({
+    } = useForm({
         resolver: yupResolver(shortenRequestSchema),
     });
 
     const [hostname, setHostname] = useState("");
     const [linkyError, setLinkyError] = useState("");
     const [serverError, setServerError] = useState("");
-    const [checked, setChecked] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
@@ -46,7 +43,7 @@ export default function LinkShortner() {
         setHostname(location.host);
     }, []);
 
-    function onSubmit(data: inputType) {
+    function onSubmit(data: any) {
         setLinkyError("");
         setLoading(true);
 

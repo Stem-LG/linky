@@ -16,7 +16,7 @@ export default function Redirect(props: any) {
             setExists(false);
         } else {
             setTimeout(() => {
-                // window.open(link, "_self");
+                window.open(link, "_self");
             }, 3000);
         }
     }, [link]);

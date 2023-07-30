@@ -369,8 +369,8 @@ function MyLinksTable({ links, setLinks }: linksTableProps) {
                 sx={{ height: "400px", mx: "10px" }}
                 columns={columns}
                 rows={links}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                pageSizeOptions={[5,10,20,50,100]}
+                
             />
         </>
     );

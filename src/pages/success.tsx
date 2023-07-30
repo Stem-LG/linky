@@ -174,8 +174,6 @@ export default function LinkySuccessInfo() {
     useEffect(() => {
         if (customLinky) {
             setFullLinky(
-                location.protocol +
-                    "//" +
                     location.host +
                     "/" +
                     customLinky.toString()
