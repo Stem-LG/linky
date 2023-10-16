@@ -13,5 +13,5 @@ export default withAuth({
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ["/api/shorten", "/api/userinfo","/","/success","/userinfo"],
+    matcher: ["/api/shorten", "/api/userinfo","/","/userinfo"],
 }
